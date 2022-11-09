@@ -1,0 +1,424 @@
+#include<iostream>
+#include<graphics.h>
+#include<conio.h>
+#include<fstream>
+#include<windows.h>
+#include<MMsystem.h>
+#include<cwchar>
+#include<vector>
+using namespace std;
+class node{
+public:
+string val;
+int state;
+
+node *prev;
+node* next;
+		
+};
+
+class linked{
+
+public:
+	node* head=NULL;
+node* call(){
+	
+	char e;
+	int i=0;
+	ifstream fin2;
+ int car1;
+ char car2[1500];
+    ifstream fin;
+ 
+    fin.open("status.txt",ios::in);
+
+while(!fin.eof())
+{
+
+
+//	cout<<"ok";
+	int var1;
+	char  var2[1500];
+	fin>>var1;
+	fin>>var2;
+	node* newnode = new node();
+      //newnode->val = var2;
+      //strcpy(var2,newnode->val);
+ int i=0,totchar=0;
+  while(var2[i] != '\0'){
+        if(var2[i]!=' ')// this condition is used to avoid counting space
+        {
+            totchar++;
+        }
+         i++;
+    }
+	//  cout<<endl<<totchar<<endl;
+	 
+		string var3;
+	for(int i=0;i<totchar;i++)
+	{
+	var3=var3+var2[i];
+	
+}
+//cout<<"h";
+
+
+	  newnode->val=var3;
+//	  	cout<<endl<<newnode->val<<endl;
+	  	  newnode->state =var1;
+	  newnode->next = NULL;
+      newnode->prev = NULL; 
+      if(head == NULL) {
+        head = newnode;
+        newnode->next = head;
+        newnode->prev = head;
+        head=newnode;
+      } else {
+        node* temp = head;
+        while(temp->next != head)
+          temp = temp->next;
+        temp->next = newnode;
+        newnode->prev = temp;
+        newnode->next = head;
+        head->prev = newnode;
+       // head = newnode;
+		}
+	
+	        //cout<<newnode->val;
+			//cout<<newnode->state;          
+
+//cout<<newnode->state<<endl<<newnode->val<<endl;;
+	
+}
+
+return head;
+
+}
+};
+void sound(char ar[]){
+	
+	
+cout<<ar;	
+	initwindow(800,200,"UPLOADED statuses",200,300,false);
+		
+settextstyle(EUROPEAN_FONT ,HORIZ_DIR,3);
+outtextxy(50,50,"voice is playing...");
+	PlaySound(TEXT(ar),NULL,SND_SYNC);
+
+	closegraph();
+	
+}
+void displa(string textstory1,int type){
+ 
+
+	initwindow(1200,200,"UPLOADED statuses",10,0,false);
+	
+settextstyle(EUROPEAN_FONT ,HORIZ_DIR,1);
+outtextxy(50,50,"\tPRESS A FOR PREVIOUSE STATUS AND D FOR NEXT ONE ELSE ANY OTHER KEY TO TERMINATE");
+
+char textstory[textstory1.length() + 1]; 
+ char a[textstory1.length() + 1];
+    strcpy(textstory, textstory1.c_str()); 
+	strcpy(a, textstory1.c_str()); 
+	
+		//char [1500];
+	textstory1=textstory;
+	
+	
+	if(type==1){
+	initwindow(800,200,"UPLOADED statuses",200,300,false);
+		
+settextstyle(EUROPEAN_FONT ,HORIZ_DIR,3);
+outtextxy(50,50,textstory);
+//outtextxy(50,50,"\n\nHurray! Status Uploaded \n");
+//settextstyle(EUROPEAN_FONT ,HORIZ_DIR,3);
+
+Sleep(5000);
+		
+	}
+	else if(type==2){
+	initwindow(800,200,"UPLOADED statuses",200,300,false);
+		
+	readimagefile(textstory,150,10,500,300);
+	
+	Sleep(5000);
+   
+	}
+	else if(type==3){
+		
+sound(textstory);
+		
+	}
+	
+closegraph();	
+	
+	
+	
+	
+}
+int upload(){
+
+
+initwindow(900,50,"menu ",200,0,false);
+    
+settextstyle(EUROPEAN_FONT ,HORIZ_DIR,2);
+outtextxy(5,5,"Press 1 for text status! or 2   for image ! else press any key for audio file");
+
+char select;
+select=getche();
+
+closegraph();
+
+string st;
+ifstream myread;
+myread.open("status.txt");
+bool empty = ( myread.get(), myread.eof() );
+if(empty){
+st="FIRST STATUS ";
+}
+else{
+	st="STATUS";
+}
+	if(select=='1'){
+	
+cout<<endl<<"Enter ANY thing As "<<st<<"  TO UPLOAD :";
+}
+else if(select=='2'){
+	//select='2';
+	cout<<endl<<"DRAG AND DROP ANY IMAGE FILE AS  "<<st<<"  TO UPLOAD :";
+}
+else{
+select='3';
+	cout<<endl<<"DRAG AND DROP ANY AUDIO(.wav)  FILE AS  "<<st<<"  TO UPLOAD :";
+
+}
+
+char textstory[1500];
+
+cin>>textstory;
+
+    ofstream outdata;
+    
+    outdata.open("status.txt",ios::app);
+    if(!outdata){
+    	cout<<"File inaccessible";
+	}
+	else{
+		outdata<<select;
+		outdata<<endl;
+		outdata<<textstory;
+		outdata<<endl;
+ 
+    
+	
+if(select=='1'){
+	initwindow(800,100,"STATUS UPLOADED",100,10,false);
+
+settextstyle(EUROPEAN_FONT ,HORIZ_DIR,3);
+outtextxy(50,50,textstory);
+//outtextxy(50,50,"\n\nHurray! Status Uploaded \n");
+//settextstyle(EUROPEAN_FONT ,HORIZ_DIR,3);
+
+Sleep(1000);
+PlaySound(TEXT("C:\\Users\\huzaifa\\Downloads\\a.wav"),NULL,SND_SYNC);
+
+}
+else if(select=='2'){
+	initwindow(800,400,"STATUS UPLOADED",200,10,false);
+	
+	readimagefile(textstory,150,10,500,450);
+	
+	Sleep(1000);
+    PlaySound(TEXT("C:\\Users\\huzaifa\\Downloads\\imae story.wav"),NULL,SND_SYNC);
+
+	
+}
+else if(select=='3'){
+	initwindow(800,200,"STATUS UPLOADED",200,300,false);
+    settextstyle(EUROPEAN_FONT ,HORIZ_DIR,3);
+    outtextxy(50,50,"VOICE STATUS UPLOADED");
+    PlaySound(TEXT(textstory),NULL,SND_SYNC);
+
+//	sleep(2000);
+	
+	
+
+}
+
+
+Sleep(1000);
+
+closegraph();
+closegraph();
+	}
+    
+	
+
+return 0;
+	
+}
+void check(){
+	
+	ifstream myread;
+	myread.open("status.txt");
+	 
+	bool empty = ( myread.get(), myread.eof() );
+    if(empty){
+
+initwindow(800,200,"NO STATUS UPLOADED",200,300,false);
+Sleep(2000);
+
+
+settextstyle(EUROPEAN_FONT ,HORIZ_DIR,5);
+outtextxy(50,50,"OOPS! No Status Uploaded");
+PlaySound(TEXT("C:\\Users\\huzaifa\\Documents\\project\\oops.wav"),NULL,SND_SYNC);
+
+
+
+closegraph();
+
+	
+}
+else{
+
+
+
+node* head;
+linked a;
+head=a.call();
+
+char ty;
+
+
+node *temp=head;
+cout<<head->val;
+cout<<head->state;
+//cout<<"hgjhfg";
+while(temp->next!=NULL){
+displa(temp->val,temp->state);
+	
+	ty=getche();
+	
+if(ty=='a')
+{
+	temp=temp->prev;
+}
+else if(ty=='d'){
+temp=temp->next;	
+}
+else{
+	break;
+}
+
+
+
+	
+}
+
+}
+	
+}
+
+
+
+void del(){
+
+
+
+    ofstream outdata;
+    
+    outdata.open("status.txt",ios::out);
+//outdata.close();
+if(!outdata){
+	
+	
+	
+//	cout<<"ht";
+}
+else{
+cout<<"\n::ALL STATUSES ARE DELETED!::";
+initwindow(800,200,"ALL STATUS DELETED",200,300,false);
+settextstyle(EUROPEAN_FONT ,HORIZ_DIR,3);
+outtextxy(50,50,"STATUSES ARE NOW TRASHED");
+PlaySound(TEXT("C:\\Users\\huzaifa\\Downloads\\trashed statuses.wav"),NULL,SND_SYNC);
+closegraph();
+
+//	cout<<"yt";
+}
+
+}
+void thnk(){
+initwindow(1300,200,"BYE BYE ",20,300,false);
+settextstyle(EUROPEAN_FONT ,HORIZ_DIR,1);
+
+outtextxy(50,50,"THANK YOU TO ALL!AND GOOD BYE! FROM: TEAM RAAFE STAY BLESSED! OVER TO YOU MAM!\n ");
+
+getch();
+
+
+
+
+}
+int main(){
+	cout<<"\t_________________________________--------------------------------------------_________________________________\n";
+cout<<"\t\t\t\t\t\tWELLCOME TO THE STORY UPLOADER SIR !\n";
+cout<<"\t_________________________________--------------------------------------------_________________________________";
+cout<<"\n\t||                                                                                                          ||";
+cout<<"\n\t||                                >> PRESS 1 TO UPLOAD ANYTHING TO YOUR STATUS                              ||";
+cout<<"\n\t||--------------------------------____________________________________________------------------------------||";
+cout<<"\n\t||                                >> PRESS 2 TO CHECK UPLOADED STATUSES ON YOUR DEVICE                      ||";
+cout<<"\n\t||--------------------------------____________________________________________------------------------------||";
+cout<<"\n\t||                                >> PRESS 3 TO DELETE ALL OF YOUR STATUSES UPLOADED ON THIS DEVICES        ||";
+cout<<"\n\t||--------------------------------____________________________________________------------------------------||";
+cout<<"\n\t||                                >> PRESS 4 TO EXIT THIS SYSTEM                                            ||";
+cout<<"\n\t||----------------------------------------------------------------------------------------------------------||";
+
+char a;
+char b='b';
+
+
+while(b!='4'){
+a=getche();
+switch(a){
+	case'1':{
+	
+upload();
+system("CLS");
+
+main();
+	break;
+	}
+	case '2':{
+		check();
+		system("CLS");
+	
+main();
+break;
+	}
+	case '3':{
+		del();
+		system("CLS");
+        
+        main();
+break;
+	}
+	case '4':{
+		b='4';
+		thnk();
+		break;
+	}
+	default:{
+cout<<"\nINVALID KEY! TRY AGAIN\n";		
+
+        system("CLS");
+        
+        main();
+		
+		break;
+	}
+}
+
+}
+
+
+}
